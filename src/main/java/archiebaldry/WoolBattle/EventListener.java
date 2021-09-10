@@ -42,7 +42,7 @@ public class EventListener implements Listener {
             } else if (team.getName().equals("blue")) {
                 world.strikeLightningEffect(location);
                 Bukkit.broadcastMessage(player.getName() + " broke red's wool!");
-                plugin.teams.getTeam("red").setWool(false);
+                plugin.teams.getTeam("red").setActive(false);
             }
         } else if (location.equals(blueWool)) {
             if (team == null) {
@@ -54,7 +54,7 @@ public class EventListener implements Listener {
             } else if (team.getName().equals("red")) {
                 world.strikeLightningEffect(location);
                 Bukkit.broadcastMessage(player.getName() + " broke blue's wool!");
-                plugin.teams.getTeam("blue").setWool(false);
+                plugin.teams.getTeam("blue").setActive(false);
             }
         }
     }
@@ -97,7 +97,7 @@ public class EventListener implements Listener {
             event.getPlayer().setGameMode(GameMode.SPECTATOR);
         } else {
             event.setRespawnLocation(team.getSpawn());
-            if (!team.hasWool()) {
+            if (!team.isActive()) {
                 event.getPlayer().setGameMode(GameMode.SPECTATOR);
             }
         }
