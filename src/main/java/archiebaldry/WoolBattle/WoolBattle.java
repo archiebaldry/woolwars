@@ -40,10 +40,9 @@ public class WoolBattle extends JavaPlugin {
             Team team = teams.getPlayerTeam(player.getName());
             if (team == null) { // Spectator
                 player.setGameMode(GameMode.SPECTATOR);
-            } else if (team.getName().equals("red")) {
+            } else {
                 player.setGameMode(GameMode.SURVIVAL);
-                Location redSpawn = new Location(getServer().getWorlds().get(0), -2.5D, 64.0D, -8.5D, 0.0F, 0.0F);
-                player.teleport(redSpawn);
+                player.teleport(team.getSpawn());
             }
         }
     }

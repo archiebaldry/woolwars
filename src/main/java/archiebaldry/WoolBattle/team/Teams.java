@@ -29,7 +29,7 @@ public class Teams {
         blue.setPrefix("§9");
 
         teams.put("red", new Team("red", new Location(world, -2.5D, 64.0D, -8.5D, 0.0F, 0.0F)));
-        teams.put("blue", new Team("blue", new Location(world, 2.5D, 64.0D, 8.5D, 0.0F, 0.0F)));
+        teams.put("blue", new Team("blue", new Location(world, 2.5D, 64.0D, 8.5D, 180.0F, 0.0F)));
     }
 
     public void updateScoreboard() {
