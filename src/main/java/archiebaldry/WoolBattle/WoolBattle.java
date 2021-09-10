@@ -13,11 +13,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class WoolBattle extends JavaPlugin {
 
-    public boolean gameStarted = false;
+    private boolean gameStarted;
     public Teams teams;
 
     @Override
     public void onEnable() {
+        gameStarted = false;
+
         // Events
         getServer().getPluginManager().registerEvents(new EventListener(), this);
 
@@ -44,6 +46,10 @@ public class WoolBattle extends JavaPlugin {
                 player.teleport(redSpawn);
             }
         }
+    }
+
+    public boolean hasGameStarted() {
+        return gameStarted;
     }
 
 }

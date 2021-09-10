@@ -13,7 +13,7 @@ public class CommandLeave implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Check if game has started
-        if (plugin.gameStarted) {
+        if (plugin.hasGameStarted()) {
             sender.sendMessage("Game is in progress.");
             return false;
         }
