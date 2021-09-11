@@ -10,11 +10,15 @@ public class Team {
     private boolean active = true;
     private final String name;
     private final List<String> members = new ArrayList<>();
-    private final Location spawn;
+    private final String prefix;
+    private final Location spawnLocation;
+    private final Location woolLocation;
 
-    public Team(String name, Location spawn) {
+    public Team(String name, String prefix, Location spawnLocation, Location woolLocation) {
         this.name = name;
-        this.spawn = spawn;
+        this.prefix = prefix;
+        this.spawnLocation = spawnLocation;
+        this.woolLocation = woolLocation;
     }
 
     public boolean isActive() {
@@ -29,8 +33,16 @@ public class Team {
         return name;
     }
 
-    public Location getSpawn() {
-        return spawn;
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public Location getSpawnLocation() {
+        return spawnLocation;
+    }
+
+    public Location getWoolLocation() {
+        return woolLocation;
     }
 
     public void addMember(String playerName) {

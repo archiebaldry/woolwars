@@ -1,19 +1,25 @@
 package archiebaldry.WoolBattle.team;
 
+import archiebaldry.WoolBattle.WoolBattle;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Teams {
 
-    private Scoreboard scoreboard;
-    private final HashMap<String, Team> teams = new HashMap<>();
+    private final WoolBattle plugin = WoolBattle.getPlugin(WoolBattle.class);
 
-    public Teams(World world) {
+    private Scoreboard scoreboard;
+    private final Map<String, Team> teams = new HashMap<>();
+
+    public Teams() {
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
 
         org.bukkit.scoreboard.Team red = scoreboard.registerNewTeam("red");
@@ -28,8 +34,9 @@ public class Teams {
         red.setPrefix("§c");
         blue.setPrefix("§9");
 
-        teams.put("red", new Team("red", new Location(world, -2.5D, 64.0D, -8.5D, 0.0F, 0.0F)));
-        teams.put("blue", new Team("blue", new Location(world, 2.5D, 64.0D, 8.5D, 180.0F, 0.0F)));
+        World world = plugin.getWorld();
+        teams.put("red", new Team("red", "§c", new Location(world, -2.5D, 64.0D, -8.5D, 0.0F, 0.0F), new Location(world, 0.0D, 65.0D, -9.0D)));
+        teams.put("blue", new Team("blue", "§9", new Location(world, 2.5D, 64.0D, 8.5D, 180.0F, 0.0F), new Location(world, 0.0D, 65.0D, 9.0D)));
     }
 
     public void updateScoreboard() {
@@ -79,6 +86,16 @@ public class Teams {
             }
         }
         return null;
+    }
+
+    public List<Team> getEnemyTeams(Team team) {
+        List<Team> enemyTeams = new ArrayList<>();
+        for (Team enemyTeam : teams.values()) {
+            if (!enemyTeam.equals(team)) {
+                enemyTeams.add(enemyTeam);
+            }
+        }
+        return enemyTeams;
     }
 
 }

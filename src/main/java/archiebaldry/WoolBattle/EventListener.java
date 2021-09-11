@@ -12,49 +12,48 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class EventListener implements Listener {
 
     private final WoolBattle plugin = WoolBattle.getPlugin(WoolBattle.class);
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        World world = plugin.getServer().getWorlds().get(0);
-        Location redWool = new Location(world, 0.0D, 65.0D, -9.0D);
-        Location blueWool = new Location(world, 0.0D, 65.0D, 9.0D);
-
+        // Validate block type
         Block block = event.getBlock();
         if (block.getType() != Material.WOOL) {
             return;
         }
 
-        Location location = block.getLocation();
-
+        // Get player and their team
         Player player = event.getPlayer();
-        Team team = plugin.teams.getPlayerTeam(player.getName());
+        Team team = plugin.getTeams().getPlayerTeam(player.getName());
 
-        if (location.equals(redWool)) {
-            if (team == null) {
-                event.getPlayer().sendMessage("You can't break that wool!");
-                event.setCancelled(true);
-            } else if (team.getName().equals("red")) {
-                event.getPlayer().sendMessage("You can't break your own wool!");
-                event.setCancelled(true);
-            } else if (team.getName().equals("blue")) {
-                world.strikeLightningEffect(location);
-                Bukkit.broadcastMessage(player.getName() + " broke red's wool!");
-                plugin.teams.getTeam("red").setActive(false);
-            }
-        } else if (location.equals(blueWool)) {
-            if (team == null) {
-                event.getPlayer().sendMessage("You can't break that wool!");
-                event.setCancelled(true);
-            } else if (team.getName().equals("blue")) {
-                event.getPlayer().sendMessage("You can't break your own wool!");
-                event.setCancelled(true);
-            } else if (team.getName().equals("red")) {
-                world.strikeLightningEffect(location);
-                Bukkit.broadcastMessage(player.getName() + " broke blue's wool!");
-                plugin.teams.getTeam("blue").setActive(false);
+        // Validate player (not spectator)
+        if (team == null) {
+            player.sendMessage("Spectators are not allowed to break wool.");
+            event.setCancelled(true);
+            return;
+        }
+
+        // Validate location
+        Location location = block.getLocation();
+        if (location.equals(team.getWoolLocation())) {
+            player.sendMessage("You cannot break your own wool.");
+            event.setCancelled(true);
+        } else {
+            for (Team enemyTeam : plugin.getTeams().getEnemyTeams(team)) {
+                if (enemyTeam.isActive() && location.equals(enemyTeam.getWoolLocation())) {
+                    event.setCancelled(true);
+                    block.setType(Material.AIR);
+                    enemyTeam.setActive(false);
+                    plugin.getWorld().strikeLightningEffect(location);
+                    Bukkit.broadcastMessage(team.getPrefix() + player.getName() + "§r broke " + enemyTeam.getPrefix() + enemyTeam.getName() + "'s§r wool!");
+                    break;
+                }
             }
         }
     }
@@ -79,7 +78,7 @@ public class EventListener implements Listener {
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         String playerName = event.getPlayer().getName();
-        Team team = plugin.teams.getPlayerTeam(playerName);
+        Team team = plugin.getTeams().getPlayerTeam(playerName);
         if (team == null) {
             event.setFormat("§7" + playerName + ": " + event.getMessage());
         } else if (team.getName().equals("red")) {
@@ -92,11 +91,11 @@ public class EventListener implements Listener {
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         String playerName = event.getPlayer().getName();
-        Team team = plugin.teams.getPlayerTeam(playerName);
+        Team team = plugin.getTeams().getPlayerTeam(playerName);
         if (team == null) {
             event.getPlayer().setGameMode(GameMode.SPECTATOR);
         } else {
-            event.setRespawnLocation(team.getSpawn());
+            event.setRespawnLocation(team.getSpawnLocation());
             if (!team.isActive()) {
                 event.getPlayer().setGameMode(GameMode.SPECTATOR);
             }
@@ -105,7 +104,7 @@ public class EventListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        plugin.teams.updateScoreboard();
+        plugin.getTeams().updateScoreboard();
     }
 
 }

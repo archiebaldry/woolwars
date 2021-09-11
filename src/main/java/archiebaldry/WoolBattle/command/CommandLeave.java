@@ -31,7 +31,7 @@ public class CommandLeave implements CommandExecutor {
         }
 
         // Unassign player
-        plugin.teams.unassignPlayer(playerName);
+        plugin.getTeams().unassignPlayer(playerName);
 
         return true;
     }

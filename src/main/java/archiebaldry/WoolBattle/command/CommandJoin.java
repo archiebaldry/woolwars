@@ -36,7 +36,7 @@ public class CommandJoin implements CommandExecutor {
         }
 
         // Assign player
-        if (!plugin.teams.assignPlayer(playerName, args[0])) {
+        if (!plugin.getTeams().assignPlayer(playerName, args[0])) {
             sender.sendMessage("Invalid team; try 'red' or 'blue'.");
         }
 
