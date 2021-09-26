@@ -35,8 +35,8 @@ public class Teams {
         blue.setPrefix("§9");
 
         World world = plugin.getWorld();
-        teams.put("red", new Team("red", "§c", new Location(world, -2.5D, 64.0D, -8.5D, 0.0F, 0.0F), new Location(world, 0.0D, 65.0D, -9.0D)));
-        teams.put("blue", new Team("blue", "§9", new Location(world, 2.5D, 64.0D, 8.5D, 180.0F, 0.0F), new Location(world, 0.0D, 65.0D, 9.0D)));
+        teams.put("red", new Team("red", "§c", new Location(world, -866.5D, 73.0D, -207.5D, -90.0F, 0.0F), new Location(world, -868.0D, 74.0D, -213.0D)));
+        teams.put("blue", new Team("blue", "§9", new Location(world, -720.5D, 73.0D, -137.5D, 90.0F, 0.0F), new Location(world, -720.0D, 74.0D, -133.0D)));
     }
 
     public void updateScoreboard() {
