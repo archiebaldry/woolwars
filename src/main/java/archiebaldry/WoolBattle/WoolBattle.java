@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,8 +20,13 @@ public class WoolBattle extends JavaPlugin {
 
     private Teams teams;
 
+    FileConfiguration config = getConfig();
+
     @Override
     public void onEnable() {
+        config.options().copyDefaults(true);
+        saveConfig();
+
         gameStarted = false;
         world = getServer().getWorlds().get(0);
 
@@ -33,6 +39,22 @@ public class WoolBattle extends JavaPlugin {
         getCommand("join").setExecutor(new CommandJoin());
         getCommand("leave").setExecutor(new CommandLeave());
         getCommand("start").setExecutor(new CommandStart());
+    }
+
+    public Location getLocationFromConfig(String path) {
+        double x = config.getDouble(path + ".x");
+        double y = config.getDouble(path + ".y");
+        double z = config.getDouble(path + ".z");
+        if (config.contains(path + ".yaw")) {
+            float yaw = (float) config.getDouble(path + ".yaw");
+            float pitch = (float) config.getDouble(path + ".pitch");
+            return new Location(getWorld(), x, y, z, yaw, pitch);
+        }
+        return new Location(getWorld(), x, y, z);
+    }
+
+    public Location toBlockLocation(Location loc) {
+        return new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     }
 
     public void startGame() {

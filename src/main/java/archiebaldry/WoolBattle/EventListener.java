@@ -61,10 +61,14 @@ public class EventListener implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         World world = plugin.getServer().getWorlds().get(0);
-        Location redSpawnFoot = new Location(world, -867.0D, 73.0D, -208.0D);
-        Location redSpawnHead = new Location(world, -867.0D, 74.0D, -208.0D);
-        Location blueSpawnFoot = new Location(world, -721.0D, 73.0D, -138.0D);
-        Location blueSpawnHead = new Location(world, -721.0D, 74.0D, -138.0D);
+
+        Location redSpawnFoot = plugin.toBlockLocation(plugin.getLocationFromConfig("red.spawn"));
+        Location redSpawnHead = redSpawnFoot.clone();
+        redSpawnHead.setY(redSpawnHead.getY() + 1.0D);
+
+        Location blueSpawnFoot = plugin.toBlockLocation(plugin.getLocationFromConfig("blue.spawn"));
+        Location blueSpawnHead = blueSpawnFoot.clone();
+        blueSpawnHead.setY(blueSpawnHead.getY() + 1.0D);
 
         Block block = event.getBlock();
         Location location = block.getLocation();

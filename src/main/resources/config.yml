@@ -1,0 +1,23 @@
+red:
+  spawn:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    yaw: 0.0
+    pitch: 0.0
+  wool:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+
+blue:
+  spawn:
+    x: 0.0
+    y: 0.0
+    z: 0.0
+    yaw: 0.0
+    pitch: 0.0
+  wool:
+    x: 0.0
+    y: 0.0
+    z: 0.0
