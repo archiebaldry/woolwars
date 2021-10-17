@@ -13,6 +13,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.List;
+
 public class WoolBattle extends JavaPlugin {
 
     private boolean gameStarted;
@@ -57,7 +59,21 @@ public class WoolBattle extends JavaPlugin {
         return new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     }
 
+    private void assignHHSPlayers() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            String n = player.getName();
+            if (n.equals("ALPH4hhs") || n.equals("BRAV0hhs") || n.equals("CHARLI3hhs") || n.equals("DELT4hhs") || n.equals("ECH0hhs")) {
+                teams.assignPlayer(n, "red");
+            }
+            if (n.equals("CASEhhs") || n.equals("GFXhhs") || n.equals("MOUSEhhs") || n.equals("RAMhhs") || n.equals("WIREhhs")) {
+                teams.assignPlayer(n, "blue");
+            }
+        }
+    }
+
     public void startGame() {
+        assignHHSPlayers();
+
         gameStarted = true;
 
         Bukkit.broadcastMessage("The game has started!");
