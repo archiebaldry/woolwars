@@ -17,7 +17,11 @@ public class CommandStart implements CommandExecutor {
             return false;
         }
 
-        plugin.startGame();
+        if (sender.isOp()) {
+            plugin.startGame();
+        } else {
+            sender.sendMessage("Only operators can start the game");
+        }
 
         return true;
     }

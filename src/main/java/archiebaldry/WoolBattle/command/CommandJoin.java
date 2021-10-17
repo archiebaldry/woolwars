@@ -32,7 +32,12 @@ public class CommandJoin implements CommandExecutor {
                 return false;
             }
         } else {
-            playerName = args[1];
+            if (sender.isOp()) {
+                playerName = args[1];
+            } else {
+                sender.sendMessage("Only operators can assign other players");
+                return true;
+            }
         }
 
         // Assign player
