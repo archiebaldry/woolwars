@@ -84,6 +84,8 @@ public class WoolBattle extends JavaPlugin {
                 player.setGameMode(GameMode.SPECTATOR);
             } else {
                 player.setGameMode(GameMode.SURVIVAL);
+                player.setHealth(20.0);
+                player.setFoodLevel(20);
                 player.teleport(team.getSpawnLocation());
             }
         }
