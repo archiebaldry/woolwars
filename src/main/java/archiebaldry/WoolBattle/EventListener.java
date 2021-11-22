@@ -7,11 +7,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +23,26 @@ import java.util.Map;
 public class EventListener implements Listener {
 
     private final WoolBattle plugin = WoolBattle.getPlugin(WoolBattle.class);
+
+    @EventHandler
+    public void onBlockBurn(BlockBurnEvent event) {
+        Block block = event.getBlock();
+        Location loc = block.getLocation();
+        if (loc.equals(plugin.getTeams().getTeam("red").getWoolLocation()) || loc.equals(plugin.getTeams().getTeam("blue").getWoolLocation())) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onEntityExplode(EntityExplodeEvent event) {
+        List<Block> blocks = event.blockList();
+        for (Block block : new ArrayList<>(blocks)) {
+            Location loc = block.getLocation();
+            if (loc.equals(plugin.getTeams().getTeam("red").getWoolLocation()) || loc.equals(plugin.getTeams().getTeam("blue").getWoolLocation())) {
+                blocks.remove(block);
+            }
+        }
+    }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
