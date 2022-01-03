@@ -1,0 +1,11 @@
+main: archiebaldry.woolwars.WoolWars
+name: WoolWars
+version: 1.0.0
+
+author: archiebaldry
+
+commands:
+  wreload:
+    aliases: wr
+  wstart:
+    aliases: ws
