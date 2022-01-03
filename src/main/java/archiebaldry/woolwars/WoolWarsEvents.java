@@ -7,8 +7,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class WoolWarsEvents implements Listener {
 
@@ -63,7 +67,20 @@ public class WoolWarsEvents implements Listener {
             event.setCancelled(true);
         }
     }
-    
+
+    @EventHandler
+    public void onEntityExplode(EntityExplodeEvent event) {
+        List<Block> blocks = event.blockList();
+
+        for (Block block : new ArrayList<>(blocks)) {
+            Location loc = block.getLocation();
+
+            if (loc.equals(plugin.red.wool) || loc.equals(plugin.blue.wool)) {
+                blocks.remove(block);
+            }
+        }
+    }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         plugin.readConfig();
