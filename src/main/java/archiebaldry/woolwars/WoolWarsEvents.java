@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -64,6 +65,23 @@ public class WoolWarsEvents implements Listener {
         Location loc = event.getBlock().getLocation();
 
         if (loc.equals(plugin.red.wool) || loc.equals(plugin.blue.wool)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        Location loc = event.getBlock().getLocation();
+
+        Location redFoot = plugin.red.spawn.getBlock().getLocation();
+        Location redHead = redFoot.add(0.0D, 1.0D, 0.0D);
+
+        Location blueFoot = plugin.blue.spawn.getBlock().getLocation();
+        Location blueHead = blueFoot.add(0.0D, 1.0D, 0.0D);
+
+        if (loc.equals(plugin.red.wool) || loc.equals(redFoot) || loc.equals(redHead) || loc.equals(plugin.blue.wool) || loc.equals(blueFoot) || loc.equals(blueHead)) {
+            Bukkit.broadcastMessage(ChatColor.RED + "You can't place blocks here");
+
             event.setCancelled(true);
         }
     }
