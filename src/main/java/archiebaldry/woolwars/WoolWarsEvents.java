@@ -9,8 +9,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,6 +98,18 @@ public class WoolWarsEvents implements Listener {
             if (loc.equals(plugin.red.wool) || loc.equals(plugin.blue.wool)) {
                 blocks.remove(block);
             }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        String name = event.getPlayer().getName();
+        WoolWarsTeam team = plugin.getPlayerTeam(event.getPlayer());
+
+        if (team == null) { // Spectator
+            event.setFormat(ChatColor.GRAY + name + ": " + event.getMessage());
+        } else  { // Player
+            event.setFormat(team.colour + name + ChatColor.RESET + ": " + event.getMessage());
         }
     }
 
