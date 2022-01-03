@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockBurnEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
@@ -54,6 +55,15 @@ public class WoolWarsEvents implements Listener {
         Bukkit.broadcastMessage(enemy.colour + enemy.name.toUpperCase() + ChatColor.RESET + " wool was broken by " + team.colour + player.getName());
     }
 
+    @EventHandler
+    public void onBlockBurn(BlockBurnEvent event) {
+        Location loc = event.getBlock().getLocation();
+
+        if (loc.equals(plugin.red.wool) || loc.equals(plugin.blue.wool)) {
+            event.setCancelled(true);
+        }
+    }
+    
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         plugin.readConfig();
