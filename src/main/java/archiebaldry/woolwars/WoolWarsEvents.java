@@ -12,7 +12,6 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.scoreboard.Team;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,7 +121,16 @@ public class WoolWarsEvents implements Listener {
 
     @EventHandler
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        plugin.setupPlayer(event.getPlayer());
+        Player player = event.getPlayer();
+        WoolWarsTeam team = plugin.getPlayerTeam(player);
+
+        if (plugin.inGame && team != null && team.hasWool()) { // If in game, not a spectator and team has wool
+            event.setRespawnLocation(team.spawn);
+            player.setGameMode(GameMode.SURVIVAL);
+        } else {
+            event.setRespawnLocation(plugin.spectatorSpawn);
+            player.setGameMode(GameMode.SPECTATOR);
+        }
     }
 
 }

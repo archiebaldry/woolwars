@@ -22,7 +22,7 @@ public class WoolWars extends JavaPlugin implements CommandExecutor {
     public WoolWarsTeam red;
     public WoolWarsTeam blue;
 
-    private boolean inGame;
+    public boolean inGame;
 
     @Override
     public void onEnable() {
